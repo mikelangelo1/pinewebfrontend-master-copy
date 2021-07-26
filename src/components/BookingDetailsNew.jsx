@@ -1,5 +1,6 @@
 import GoogleMapReact from 'google-map-react';
 import { useState, useEffect } from "react";
+import { useParams } from 'react-router';
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 import { useGoogleMaps } from "react-hook-google-maps";
 import { Modal, Button, Form } from 'react-bootstrap'
@@ -8,6 +9,7 @@ import RequestAcceptedModal from './RequestAcceptedModal'
 import Nestle from './Nestle'
 import instance from '../axiosConfig'
 import Moment from 'react-moment'
+import { filter } from 'async';
 
 <div>
 
@@ -134,7 +136,10 @@ const BookingDetailsNew = (props) => {
 
 
 
+ const {id } = useParams();
+ 
 
+ 
  return (
   <div className="container rounded">
    <div className="border rounded shadow-lg my-30" style={{ borderRadius: "20px" }}>
@@ -145,118 +150,125 @@ const BookingDetailsNew = (props) => {
        {/* Trip info */}
 
        {/* Trip header */}
+       {/* {trips.filter(trip => trip.recipient.id !== id)
+        console.log(Trip)
+       } */}
        {
-        trips.map(trip => {
-
-         function getFormattedDate() {
-          var date = trip.recipient.created_at
-          var month = date.getMonth() + 1;
-          var day = date.getDate();
-          var year = date.getFullYear();
-          return month + '/' + day + '/' + year;
-         }
-
-         return (
-          <>
-           <div style={{ display: "flex" }}>
-            {/* Img svg */}
-            <Nestle />
-            <div key={trip.id} style={{ width: "60%" }}>
-             <div><strong>{trip.recipient.name} </strong></div>
-             <div>{trip.recipient.contact}</div>
-
-            </div>
-            <div style={{ width: "15%", border: "1px solid pink", borderRadius: "22px", backgroundColor: '#FCE3E5', color: 'red', textAlign: 'center', width: '50px', height: '22px', padding: '1px, 12px, 1px, 12px' }}>New
-
-            </div>
-
-           </div>
-           <br />
-           {/* Table */}
-           <table className="table">
-            <tbody>
-             <tr>
-              <td>Booking ID</td>
-              <td><strong>#{trip.id}</strong></td>
-             </tr>
-             <tr>
-              <td>Date & Time</td>
-              <td><strong><Moment parse="YYYY-MM-DD HH:mm">{trip.recipient.created_at}</Moment></strong></td>
-             </tr> <tr>
-              <td>Nature of goods</td>
-              <td><strong>{trip.goods.name}</strong> <strong>{"(<" + trip.tonnage + " ton)"}</strong></td>
-             </tr> <tr>
-              <td>Value of goods</td>
-              <td><strong>₦{(trip.value_of_goods).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></td>
-             </tr> <tr>
-              <td>Estimated fare</td>
-              <td><strong>{trip.price ? trip.price : "₦0.00"}</strong></td>
-             </tr>
-            </tbody>
-           </table>
-           {/* Bottom */}
-           <div style={{ display: "flex" }}>
-            <div className="trailing-map-icon" style={{ width: "25%" }}>
-             <div><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="5.5" cy="5.5" r="5.5" fill="#FACF19" />
-             </svg>
-             </div>
-             <div style={{ marginLeft: "5px" }}><svg width="1" height="57" viewBox="0 0 1 57" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <line opacity="0.7" x1="0.5" y1="0.5" x2="0.499998" y2="56.5" stroke="#FACF19" strokeLinecap="round" />
-             </svg>
-             </div>
-             <div><svg width="11" height="15" viewBox="0 0 11 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4.93476 14.6974C0.772578 8.5263 0 7.89296 0 5.625C0 2.51839 2.46242 0 5.5 0C8.53758 0 11 2.51839 11 5.625C11 7.89296 10.2274 8.5263 6.06524 14.6974C5.7921 15.1009 5.20787 15.1009 4.93476 14.6974ZM5.5 7.96875C6.76566 7.96875 7.79167 6.91942 7.79167 5.625C7.79167 4.33058 6.76566 3.28125 5.5 3.28125C4.23434 3.28125 3.20833 4.33058 3.20833 5.625C3.20833 6.91942 4.23434 7.96875 5.5 7.96875Z" fill="#FACF19" />
-             </svg>
-             </div>
-
-            </div>
-            <div style={{ width: "75%" }}>
-             <div>
-              <div><strong>{JSON.parse(trip.pickup).description}</strong></div>
-              <div>lightedned address</div>
-
+        
+        trips.filter(trip =>trip.recipient.id === id).map(filteredTrip => {
+          console.log(filteredTrip)
+          function getFormattedDate() {
+            var date = filteredTrip.recipient.created_at
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            var year = date.getFullYear();
+            return month + '/' + day + '/' + year;
+           }
+  
+           return (
+            <>
+             <div style={{ display: "flex" }}>
+              {/* Img svg */}
+              <Nestle />
+              <div key={filteredTrip.id} style={{ width: "60%" }}>
+               <div><strong>{filteredTrip.recipient.name} </strong></div>
+               <div>{filteredTrip.recipient.contact}</div>
+  
+              </div>
+              <div style={{ width: "15%", border: "1px solid pink", borderRadius: "22px", backgroundColor: '#FCE3E5', color: 'red', textAlign: 'center', width: '50px', height: '22px', padding: '1px, 12px, 1px, 12px' }}>New
+  
+              </div>
+  
              </div>
              <br />
-
-             <div>
-              <div><strong>{JSON.parse(trip.delivery)[0].payload.description}</strong></div>
-              <div>lightedned address</div>
+             {/* Table */}
+             <table className="table">
+              <tbody>
+               <tr>
+                <td>Booking ID</td>
+                <td><strong>#{filteredTrip.id}</strong></td>
+               </tr>
+               <tr>
+                <td>Date & Time</td>
+                <td><strong><Moment parse="YYYY-MM-DD HH:mm">{filteredTrip.recipient.created_at}</Moment></strong></td>
+               </tr> <tr>
+                <td>Nature of goods</td>
+                <td><strong>{filteredTrip.goods.name}</strong> <strong>{"(<" + filteredTrip.tonnage + " ton)"}</strong></td>
+               </tr> <tr>
+                <td>Value of goods</td>
+                <td><strong>₦{(filteredTrip.value_of_goods).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></td>
+               </tr> <tr>
+                <td>Estimated fare</td>
+                <td><strong>{filteredTrip.price ? filteredTrip.price : "₦0.00"}</strong></td>
+               </tr>
+              </tbody>
+             </table>
+             {/* Bottom */}
+             <div style={{ display: "flex" }}>
+              <div className="trailing-map-icon" style={{ width: "25%" }}>
+               <div><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="5.5" cy="5.5" r="5.5" fill="#FACF19" />
+               </svg>
+               </div>
+               <div style={{ marginLeft: "5px" }}><svg width="1" height="57" viewBox="0 0 1 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <line opacity="0.7" x1="0.5" y1="0.5" x2="0.499998" y2="56.5" stroke="#FACF19" strokeLinecap="round" />
+               </svg>
+               </div>
+               <div><svg width="11" height="15" viewBox="0 0 11 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4.93476 14.6974C0.772578 8.5263 0 7.89296 0 5.625C0 2.51839 2.46242 0 5.5 0C8.53758 0 11 2.51839 11 5.625C11 7.89296 10.2274 8.5263 6.06524 14.6974C5.7921 15.1009 5.20787 15.1009 4.93476 14.6974ZM5.5 7.96875C6.76566 7.96875 7.79167 6.91942 7.79167 5.625C7.79167 4.33058 6.76566 3.28125 5.5 3.28125C4.23434 3.28125 3.20833 4.33058 3.20833 5.625C3.20833 6.91942 4.23434 7.96875 5.5 7.96875Z" fill="#FACF19" />
+               </svg>
+               </div>
+  
+              </div>
+              <div style={{ width: "75%" }}>
+               <div>
+                <div><strong>{JSON.parse(filteredTrip.pickup).description}</strong></div>
+                <div>lightedned address</div>
+  
+               </div>
+               <br />
+  
+               <div>
+                <div><strong>{JSON.parse(filteredTrip.delivery)[0].payload.description}</strong></div>
+                <div>lightedned address</div>
+               </div>
+              </div>
+  
+              <br />
+              <br />
              </div>
-            </div>
+  
+             <hr />
+  
+             <div style={{ display: "flex" }}>
+              <div style={{ width: "50%" }}><Button type="button" variant="light" style={{ padding: "8px 20px" }} onClick={() => setModalShowRejected(true)}>Reject Request</Button></div>
+  
+              <div style={{ width: "50%" }}><Button type="button" style={{ padding: "8px 20px" }} variant="warning" onClick={() => setModalShowAccepted(true)}>Accept Request</Button></div>
+  
+              <DetailsAcceptedRequest
+               show={modalShowAccepted}
+               onHide={() => setModalShowAccepted(false)}
+              />
+              <DetailsRejectedRequest
+               show={modalShowRejected}
+               onHide={() => setModalShowRejected(false)}
+              />
+              <RequestRejectModal
+               show={modalShowRequestRejected}
+               onHide={() => setModalShowRequestRejected(false)}
+              />
+              <RequestAcceptedModal
+               show={modalShowRequestAccepted}
+               onHide={() => setModalShowRequestAccepted(false)}
+              />
+             </div>
+            </>
+           )}
 
-            <br />
-            <br />
-           </div>
-
-           <hr />
-
-           <div style={{ display: "flex" }}>
-            <div style={{ width: "50%" }}><Button type="button" variant="light" style={{ padding: "8px 20px" }} onClick={() => setModalShowRejected(true)}>Reject Request</Button></div>
-
-            <div style={{ width: "50%" }}><Button type="button" style={{ padding: "8px 20px" }} variant="warning" onClick={() => setModalShowAccepted(true)}>Accept Request</Button></div>
-
-            <DetailsAcceptedRequest
-             show={modalShowAccepted}
-             onHide={() => setModalShowAccepted(false)}
-            />
-            <DetailsRejectedRequest
-             show={modalShowRejected}
-             onHide={() => setModalShowRejected(false)}
-            />
-            <RequestRejectModal
-             show={modalShowRequestRejected}
-             onHide={() => setModalShowRequestRejected(false)}
-            />
-            <RequestAcceptedModal
-             show={modalShowRequestAccepted}
-             onHide={() => setModalShowRequestAccepted(false)}
-            />
-           </div>
-          </>
+         
          )
-        })
-       }
+        }
+      
       </div>
      </div>
 

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import './App.css';
 import axiosConfig from './axiosConfig';
 import Navbar from "./components/Navbar";
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect, useParams } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./components/Home/Home/Home";
 import Support from "./components/Home/Home/Support/Support";
@@ -113,6 +113,7 @@ const app = function App() {
             <Route path="/login" component={Login} />
             <div>
               <Navbar />
+              <Route path="/details-new/:id" component={BookingDetailsNew} />
               <Route path="/" component={Home} exact />
               <Route path="/fleets" component={Fleets} />
               <Route path="/trips" component={Trips} />
@@ -149,7 +150,6 @@ const app = function App() {
               {/* <Route path="/bookings" component={Bookings} /> */}
               <Route path="/invitesent" component={InviteSent} />
               <Route path="/details-assigned" component={BookingDetailsAssigned} />
-              <Route path="/details-new" component={BookingDetailsNew} />
 
 
             </div>

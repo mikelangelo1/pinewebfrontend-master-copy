@@ -2,21 +2,28 @@ import { useEffect, useState } from "react";
 import "./Home.css";
 import instance from '../../../axiosConfig';
 import { Dropdown, Button, Modal } from 'react-bootstrap'
-import { Link } from "react-router-dom";
+import { Link, useHistory, generatePath } from "react-router-dom";
 
 
 
 
 function Home() {
   const [trips, setTrips] = useState([]);
+  const [id, setId] = useState();
+  const history = useHistory();
 
-  useEffect((history) => {
+  useEffect(() => {
     instance.get('/trips?filter=pending').then((res) => {
       setTrips(res.data.data.data);
     }).catch((err) => {
       console.log(err)
     })
-  }, [])
+  }, [setTrips])
+
+  const handleClickAction = (userId) => {
+    setId(userId)
+    id && history.push(generatePath("/details-new/:id", { id }))
+  }
   return (
     <div>
       <div className="container mt-3">
@@ -126,12 +133,13 @@ function Home() {
               </thead>
               <tbody>
                 {trips.map((trip, index) => {
-                  console.log("Trip: " + Object.keys(trip))
+                  // console.log("Trip: " + Object.keys(trip))
+                  console.log(trip)
                   return (
                     <tr key={index}>
-                      <td><Link to={"/details-new/" + trip.recipient.name} style={{ textDecoration: 'none', color: 'black' }}>
-                        {trip.recipient.name}
-                      </Link></td>
+                      <td><Button onClick={() => handleClickAction(trip.recipient_id)} style={{ textDecoration: 'none', color: 'black' }}>
+                        {trip.recipient.name} </Button>
+                      </td>
                       <td><Link to="/details-new" style={{ textDecoration: 'none', color: 'black' }}>
                         {trip.goods.name}
                       </Link></td>
