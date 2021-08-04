@@ -7,7 +7,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import { register } from '../../../redux/actions/auth';
 import PropTypes from 'prop-types';
 import instance from '../../../axiosConfig'
-
 import 'react-toastify/dist/ReactToastify.css';
 import "./CreateAccount.css";
 import Logo from "../Logo.png";
@@ -17,7 +16,7 @@ import { propTypes } from 'react-bootstrap/esm/Image';
 const SuccessfulSignUp = ({ register, isAuthenticated }) => {
   useEffect(() => {
     instance.get('/roles').then((res) => {
-      console.log(res.data[0].id)
+      console.log(res.data)
       // setRole_id(res.data)
     })
   }, [])
@@ -62,7 +61,10 @@ const SuccessfulSignUp = ({ register, isAuthenticated }) => {
 
 
   const onSubmit = async (e) => {
-    let name = firstName + lastName
+    let role_id = 1;
+    let name = ` ${firstName} ${lastName} `
+    let email = emailAddress;
+    let phone = phoneNumber
     e.preventDefault();
     if (password.length < 6) {
       toast.error("Please enter a password with 6 or more characters")
@@ -79,7 +81,8 @@ const SuccessfulSignUp = ({ register, isAuthenticated }) => {
       })
 
     } else {
-      register({ name, emailAddress, password, phoneNumber, role_id });
+      register({ name,  email, password, phone, role_id });
+      console.log(phone)
     }
   };
 
@@ -90,7 +93,7 @@ const SuccessfulSignUp = ({ register, isAuthenticated }) => {
   return (
     <>
       <div className="container mt-3">
-        <div className="row px-4">
+        <div className="row px-4" style={{width : '100%', height: "100%"}}>
           <div className="column-1">
             <div className="px-4 clap">
               <img src={Logo} width={30} height={30} alt="Logo" className="img-thumbnail" />
@@ -106,11 +109,11 @@ const SuccessfulSignUp = ({ register, isAuthenticated }) => {
             <h4 className="text-center mt-5">Create your Pine account</h4>
             <p className="text-center text-secondary">Curabitur aliquet quam id dui posuere blandit.</p>
 
-            <div className="container">
+            <div className="container" >
               <div className="px-5">
                 <form className="px-4 mt-5" onSubmit={onSubmit}>
                   <div style={{ display: 'flex' }}>
-                    <div className="form-group" style={{ width: '47%', paddingBottom: '40px' }}>
+                    <div className="form-group" style={{ width: '47%', paddingBottom: '30px' }}>
                       <input
                         type="text"
                         className="form-control ty"
@@ -121,9 +124,9 @@ const SuccessfulSignUp = ({ register, isAuthenticated }) => {
                       />
                     </div>
 
-                    <div style={{ width: "6%" }}></div>
+                    <div style={{ width: "6%", paddingBottom: '30px' }}></div>
 
-                    <div className="form-group" style={{ width: '47%', paddingBottom: '40px' }}>
+                    <div className="form-group" style={{ width: '47%', paddingBottom: '30px' }}>
                       <input
                         type="text"
                         className="form-control ty"
@@ -137,7 +140,7 @@ const SuccessfulSignUp = ({ register, isAuthenticated }) => {
                   </div>
 
 
-                  <div className="form-group">
+                  <div className="form-group" style={{ paddingBottom: '30px' }}> 
                     <input
                       type="text"
                       className="form-control ty"
@@ -148,7 +151,7 @@ const SuccessfulSignUp = ({ register, isAuthenticated }) => {
                       value={phoneNumber}
                     />
                   </div>
-                  <div className="form-group">
+                  <div className="form-group" style={{ paddingBottom: '30px' }}>
                     <input
                       type="text"
                       className="form-control tzy"
@@ -159,7 +162,7 @@ const SuccessfulSignUp = ({ register, isAuthenticated }) => {
                       value={emailAddress} />
                   </div>
 
-                  <div className="form-group" style={{ display: 'flex' }}>
+                  <div className="form-group" style={{ display: 'flex',  paddingBottom: '30px' }}>
                     <div style={{ width: '47%', backgroundColor: '#F8F9FA', padding: '10px', borderRadius: '8px' }}>
 
                       <input type="radio"
@@ -182,7 +185,7 @@ const SuccessfulSignUp = ({ register, isAuthenticated }) => {
 
                   </div>
 
-                  <div className="form-group">
+                  <div className="form-group" style={{ paddingBottom: '30px' }}>
                     <select
                       className="form-control tzy"
                       onChange={e => handleAccountSubtype(e)}
@@ -192,7 +195,7 @@ const SuccessfulSignUp = ({ register, isAuthenticated }) => {
                     </select>
                   </div>
 
-                  <div className="form-group">
+                  <div className="form-group" style={{ paddingBottom: '30px' }}>
                     <input
                       type="password"
                       className="form-control ty"
@@ -219,7 +222,7 @@ const SuccessfulSignUp = ({ register, isAuthenticated }) => {
                       <input type="checkbox" id="t&c" name="terms_and_conditions" value="Terms and Conditions" checked={isChecked} onChange={handleOnChange} />
                     </div>
 
-                    <div style={{ width: '95%', marginTop: '0px' }}>
+                    <div style={{ width: '95%', marginTop: '0px', paddingBottom: '20px' }}>
                       I agree to Pine’s <b><a href="#" style={{ color: 'black', textDecoration: 'underline' }} >Terms & conditions</a></b> and <b><a href="#" style={{ color: 'black', textDecoration: 'underline' }}>Policy</a></b>
                     </div>
 

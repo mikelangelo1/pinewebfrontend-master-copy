@@ -3,7 +3,11 @@ import { useState, useEffect } from "react";
 import './App.css';
 import axiosConfig from './axiosConfig';
 import Navbar from "./components/Navbar";
+<<<<<<< HEAD
 import { BrowserRouter as Router, Switch, Route, useParams, Redirect } from 'react-router-dom';
+=======
+import { BrowserRouter as Router, Switch, Route, Redirect, useParams } from 'react-router-dom';
+>>>>>>> eddee52607236221d71853d2e6da1dfed46dad51
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./components/Home/Home/Home";
 import Support from "./components/Home/Home/Support/Support";
@@ -81,6 +85,7 @@ import {LOGOUT } from './redux/actions/types'
             <Route path="/login" component={Login} />
             <div>
               <Navbar />
+              <Route path="/details-new/:id" component={BookingDetailsNew} />
               <Route path="/" component={Home} exact />
               <Route path="/fleets" component={Fleets} />
               <Route path="/trips" component={Trips} />
@@ -116,8 +121,11 @@ import {LOGOUT } from './redux/actions/types'
               {/* <Route path="/bookings" component={Bookings} /> */}
               <Route path="/invitesent" component={InviteSent} />
               <Route path="/details-assigned" component={BookingDetailsAssigned} />
+<<<<<<< HEAD
               {/* <Route path="/details-new/:id" component={BookingDetailsNew} /> */}
               <Route path="/details-new/:id" component={BookingDetailsNew} />
+=======
+>>>>>>> eddee52607236221d71853d2e6da1dfed46dad51
 
 
             </div>

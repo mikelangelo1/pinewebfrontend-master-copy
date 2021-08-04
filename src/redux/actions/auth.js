@@ -1,4 +1,5 @@
 import instance from '../../axiosConfig';
+import axios from 'axios';
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -19,7 +20,8 @@ export const setCurrentUser = user => ({
 // Register User
 export const register = formData => async dispatch => {
   try {
-    const res = await instance.post('/register', formData);
+    console.log(formData)
+    const res = await axios.post('https://pine.africa/api/register', formData);
 
     dispatch({
       type: REGISTER_SUCCESS,
@@ -27,7 +29,7 @@ export const register = formData => async dispatch => {
     });
     dispatch(setCurrentUser());
   } catch (err) {
-    const errors = err.response.data.errors;
+    // const errors = err.response.data.errors;
 
     dispatch({
       type: REGISTER_FAIL
@@ -40,7 +42,7 @@ export const login = (email, password) => async dispatch => {
   const body = { email, password };
 
   try {
-    const res = await instance.post('/auth', body);
+    const res = await instance.post('/login', body);
 
     dispatch({
       type: LOGIN_SUCCESS,
@@ -50,6 +52,10 @@ export const login = (email, password) => async dispatch => {
     dispatch(setCurrentUser());
   } catch (err) {
     const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach( error => dispatch())
+    }
 
     dispatch({
       type: LOGIN_FAIL

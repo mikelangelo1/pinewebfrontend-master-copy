@@ -1,5 +1,6 @@
 import GoogleMapReact from 'google-map-react';
 import { useState, useEffect } from "react";
+import { useParams } from 'react-router';
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 import { useGoogleMaps } from "react-hook-google-maps";
 import { Modal, Button, Form } from 'react-bootstrap'
@@ -8,7 +9,10 @@ import RequestAcceptedModal from './RequestAcceptedModal'
 import Nestle from './Nestle'
 import instance from '../axiosConfig'
 import Moment from 'react-moment'
+<<<<<<< HEAD
 import { useParams } from 'react-router-dom';
+=======
+>>>>>>> eddee52607236221d71853d2e6da1dfed46dad51
 import { filter } from 'async';
 
 <div>
@@ -165,7 +169,10 @@ const BookingDetailsNew = (props) => {
  } = trips
  console.log("Trips"+trips);
 
+ const {id } = useParams();
+ 
 
+ 
  return (
   <div className="container rounded">
    <div className="border rounded shadow-lg my-30" style={{ borderRadius: "20px" }}>
@@ -181,8 +188,13 @@ const BookingDetailsNew = (props) => {
        } */}
        {
         
+<<<<<<< HEAD
         trips.filter(trip =>trip.recipient.id == id).map(filteredTrip => {
           console.log("Filtered trip: "+filteredTrip)
+=======
+        trips.filter(trip =>trip.recipient.id === id).map(filteredTrip => {
+          console.log(filteredTrip)
+>>>>>>> eddee52607236221d71853d2e6da1dfed46dad51
           function getFormattedDate() {
             var date = filteredTrip.recipient.created_at
             var month = date.getMonth() + 1;
@@ -262,6 +274,7 @@ const BookingDetailsNew = (props) => {
   
               <br />
               <br />
+<<<<<<< HEAD
              </div>
   
              <hr />
@@ -288,6 +301,34 @@ const BookingDetailsNew = (props) => {
                onHide={() => setModalShowRequestAccepted(false)}
               />
              </div>
+=======
+             </div>
+  
+             <hr />
+  
+             <div style={{ display: "flex" }}>
+              <div style={{ width: "50%" }}><Button type="button" variant="light" style={{ padding: "8px 20px" }} onClick={() => setModalShowRejected(true)}>Reject Request</Button></div>
+  
+              <div style={{ width: "50%" }}><Button type="button" style={{ padding: "8px 20px" }} variant="warning" onClick={() => setModalShowAccepted(true)}>Accept Request</Button></div>
+  
+              <DetailsAcceptedRequest
+               show={modalShowAccepted}
+               onHide={() => setModalShowAccepted(false)}
+              />
+              <DetailsRejectedRequest
+               show={modalShowRejected}
+               onHide={() => setModalShowRejected(false)}
+              />
+              <RequestRejectModal
+               show={modalShowRequestRejected}
+               onHide={() => setModalShowRequestRejected(false)}
+              />
+              <RequestAcceptedModal
+               show={modalShowRequestAccepted}
+               onHide={() => setModalShowRequestAccepted(false)}
+              />
+             </div>
+>>>>>>> eddee52607236221d71853d2e6da1dfed46dad51
             </>
            )}
 
