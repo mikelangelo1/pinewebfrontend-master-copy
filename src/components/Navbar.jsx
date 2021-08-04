@@ -77,12 +77,12 @@ const Navbar = ({ currentUser, history, setCurrentUser }) => {
   );
 }
 
-const mapStateProps = ({ user }) => ({
-  currentUser: user.currentUser
+const mapStateToProps = (state) => ({
+  currentUser: state.currentUser
 });
 
-const mapDispatchProps = dispatch => ({
+const mapDispatchToProps = dispatch => ({
   setCurrentUser: user => dispatch(setCurrentUser(user))
 });
 
-export default withRouter(connect(mapStateProps, mapDispatchProps)(Navbar));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));

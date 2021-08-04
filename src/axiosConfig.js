@@ -13,15 +13,15 @@ const instance = axios.create({
   }
 })
 
-instance.interceptors.response.use(undefined, function (error) {
-  if (error) {
-    const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
-        localStorage.removeItem('access_token');
-        window.location = '/login';
-    }
-    return Promise.reject(error.response);
-  }
-});
+// instance.interceptors.response.use(undefined, function (error) {
+//   if (error) {
+//     const originalRequest = error.config;
+//     if (error.response.status === 401 && !originalRequest._retry) {
+//         localStorage.removeItem('access_token');
+//         window.location = '/login';
+//     }
+//     return Promise.reject(error.response);
+//   }
+// });
 
 export default instance;

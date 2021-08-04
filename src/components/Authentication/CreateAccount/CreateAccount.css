@@ -1,4 +1,4 @@
-/* 
+
 
 * {
     box-sizing: border-box;
@@ -6,6 +6,7 @@
 
   .container{
     justify-content: center;
+    /* align-items: center; */
   }
   
   
@@ -32,6 +33,10 @@
     clear: both;
   }
 
+  .px-4 {
+      padding-right: 1rem !important;
+      padding-left: 1rem !important;
+  }
 
   
 
@@ -218,4 +223,4 @@ color: #081A38;
 
 .owner{
     margin-top: -30px;
-} */
+}

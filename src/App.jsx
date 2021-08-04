@@ -43,75 +43,41 @@ import InviteSent from "./components/Authentication/InviteSent/InviteSent";
 import Login from "./components/Authentication/Login/Login";
 import BookingDetailsAssigned from "./components/BookingDetailsAssigned"
 import BookingDetailsNew from "./components/BookingDetailsNew"
-import React from 'react';
-import { setCurrentUser } from './redux/user/user.actions';
-import { connect } from 'react-redux';
-import { history } from ".";
+import { setCurrentUser } from './redux/actions/auth';
 import AuthPage from "./pages/auth/auth.component";
+import setAuthToken from "./utils/setAuthToken";
+import store from "./redux/store"
+import { Provider } from "react-redux";
+import {LOGOUT } from './redux/actions/types'
 
 
 
-// class App extends React.Component {
-//   componentDidMount() {
 
-//   }
+// const app = function App() {
+//   let [user] = useState([]);
+//   user = localStorage.getItem('user');
+ const App = () => {
+   useEffect(() => {
+     //check for token in LS
+     if (localStorage.token) {
+       setAuthToken(localStorage.token);
+     }
+     store.dispatch(setCurrentUser());
 
-//   render() {
-
-//     let redirect = this.props.currentUser;
-//     if (redirect) {
-
-
-//     return (
-//         <div className="App">
-//         <Router>
-//           <Switch>
-//           <Route path="/Login" component={Login} />
-//             <div>
-//             <Navbar />
-//               <Route exact path="/" component={Home} />
-//               <Route path="/fleets" component={Fleets} />
-//               <Route path="/trips" component={Trips} />
-//               <Route path="/profile" component={Profile} />
-//               <Route path="/EnterBusiness" component={EnterBusiness} />
-//               <Route path="/InviteSuccessful" component={InviteSuccessful} />
-//               <Route path="/UserDetails" component={UserDetails} />
-//               <Route path="/InviteNewUsers" component={InviteNewUsers} />
-//               <Route path="/Details" component={Details} />
-//               <Route path="/DriverDetails" component={DriverDetails} />
-//               <Route path="/AddVehicle" component={AddVehicle} />
-//               <Route path="/ChangePassword" component={ChangePassword} />
-//               <Route path="/Vehicles" component={Vehicles} />
-//               <Route path="/BusinessProfile" component={BusinessProfile} />
-//               <Route path="/BankInformation" component={BankInformation} />
-//               <Route path="/MyAccount" component={MyAccount}  />
-//               <Route path="/NewDriver" component={NewDriver} />
-//               <Route path="/VerifyAccount" component={VerifyAccount} />
-//               <Route path="/ThanksForSigning" component={ThanksForSigning} />
-//               <Route path="/SuccessfulSignUp" component={SuccessfulSignUp} />
-//               <Route path="/CreateAccount" component={CreateAccount} />
-//               <Route path="/InviteYourTeam" component={InviteYourTeam} />
-//               <Route path="/Bookings" component={Bookings} />
-//               <Route path="/InviteSent" component={InviteSent} />
-//             </div>
-//           </Switch>
-//           </Router>
-//           </div>
-//         )
-//   } else {
-//     return <Login />
-//   }
-// }
-const app = function App() {
-  let [user] = useState([]);
-  user = localStorage.getItem('user');
+     //log user out from all the tabs if they log out in one tab
+     window.addEventListener('storage', () => {
+       if (!localStorage.token) store.dispatch( {type: LOGOUT});
+     });
+   }, [])
 
 
   return (
-    <>
+    <Provider store={store}>
+      <>
       <div className="App">
         <Router>
           <Switch>
+          <Route path="/register" component={CreateAccount} />
             <Route path="/login" component={Login} />
             <div>
               <Navbar />
@@ -146,7 +112,6 @@ const app = function App() {
               <Route path="/verifyaccount" component={VerifyAccount} />
               <Route path="/thanksforsigning" component={ThanksForSigning} />
               <Route path="/successfulsignUp" component={SuccessfulSignUp} />
-              <Route path="/register" component={CreateAccount} />
               <Route path="/inviteyourteam" component={InviteYourTeam} />
               {/* <Route path="/bookings" component={Bookings} /> */}
               <Route path="/invitesent" component={InviteSent} />
@@ -159,62 +124,20 @@ const app = function App() {
           </Switch>
         </Router>
       </div>
-    </>
+      </>
+    </Provider>
   );
 }
 
-const mapStateToProp = ({ user }) => ({
-  currentUser: user.currentUser
-});
+export default App;
 
-const mapDispatchToProp = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
-});
+// const mapStateToProp = ({ user }) => ({
+//   currentUser: user.currentUser
+// });x
 
-export default connect(mapStateToProp, mapDispatchToProp)(app);
+// const mapDispatchToProp = dispatch => ({
+//   setCurrentUser: user => dispatch(setCurrentUser(user))
+// });
 
-// export default function App(){
-//   const [token, setToken] = useState();
+// export default connect(mapStateToProp, mapDispatchToProp)(app);
 
-// useEffect(() =>{
-//   <Home />
-// }, [])
-//   return(
-//     <>
-//     <div className="App">
-//     <Router>
-//       <Switch>
-//       <Route path="/Login" component={Login} />
-//         <div>
-//         <Navbar />
-//           <Route path="/" component={Home} exact />
-//           <Route path="/fleets" component={Fleets} />
-//           <Route path="/trips" component={Trips} />
-//           <Route path="/profile" component={Profile} />
-//           <Route path="/EnterBusiness" component={EnterBusiness} />
-//           <Route path="/InviteSuccessful" component={InviteSuccessful} />
-//           <Route path="/UserDetails" component={UserDetails} />
-//           <Route path="/InviteNewUsers" component={InviteNewUsers} />
-//           <Route path="/Details" component={Details} />
-//           <Route path="/DriverDetails" component={DriverDetails} />
-//           <Route path="/AddVehicle" component={AddVehicle} />
-//           <Route path="/ChangePassword" component={ChangePassword} />
-//           <Route path="/Vehicles" component={Vehicles} />
-//           <Route path="/BusinessProfile" component={BusinessProfile} />
-//           <Route path="/BankInformation" component={BankInformation} />
-//           <Route path="/MyAccount" component={MyAccount} />
-//           <Route path="/NewDriver" component={NewDriver} />
-//           <Route path="/VerifyAccount" component={VerifyAccount} />
-//           <Route path="/ThanksForSigning" component={ThanksForSigning} />
-//           <Route path="/SuccessfulSignUp" component={SuccessfulSignUp} />
-//           <Route path="/CreateAccount" component={CreateAccount} />
-//           <Route path="/InviteYourTeam" component={InviteYourTeam} />
-//           <Route path="/Bookings" component={Bookings} />
-//           <Route path="/InviteSent" component={InviteSent} />
-//         </div>
-//       </Switch>
-//       </Router>
-//       </div>
-//     </>
-//   );
-// }
